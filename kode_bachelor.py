@@ -105,14 +105,14 @@ count = 0
 for i in range(len(rows)):
     if all(elem in str(rows[i][6]) for elem in str(rows[i][5])) and (len(rows[i][5]) != 0) and (len(rows[i][6]) != 0) and (any(x in [7, 8, 9, 10, 11, 12] for x in rows[i][5])):
         count += 1
-print("Persons obtaining their motives and also more:", count)
+print("Persons obtaining their motives and also more, top1, eud:", count)
 
 # How many obtaining at least their goal motives for top 2 app and having eudaimonic motives
 count = 0
 for i in range(len(rows)):
     if all(elem in str(rows[i][12]) for elem in str(rows[i][11])) and (len(rows[i][12]) != 0) and (len(rows[i][11]) != 0) and (any(x in [7, 8, 9, 10, 11, 12] for x in rows[i][11])):
         count += 1
-print("Persons obtaining their motives and also more:", count)
+print("Persons obtaining their motives and also more, top2, eud:", count)
 print("-----------------------------------------------------------")
 
 #DEL 2: SAMMENHÆNG MELLEM MOTIV OG VELVÆRE? ##################################################################################
@@ -385,13 +385,12 @@ print("Number of people unsatisfied and having consequences:", count)
 
 # What apps are reported from satisfies users
 satisfied_apps = []
-for i in range(len(rows)):
-    if any(x in [5, 6, 7] for x in rows[i][8]):
-        satisfied_apps.append(rows[i][3])
-    if any(x in [5, 6, 7] for x in rows[i][14]):
-        satisfied_apps.append(rows[i][9])
-    if any(x in [5, 6, 7] for x in rows[i][20]):
-        satisfied_apps.append(rows[i][15])
+for row in rows:
+    app_indices = [8, 14, 20]  # Indices of columns with consequences
+    app_names = [3, 9, 15]     # Indices of columns with app names
+    for i in range(len(app_indices)):
+        if any(x in [5, 6, 7] for x in row[app_indices[i]]):
+            satisfied_apps.append(row[app_names[i]])
 print("Apps reported with satisfaction:", satisfied_apps)
 
 print("-----EXTRA------------------------------------------------------")
@@ -446,33 +445,32 @@ average2 = statistics.mean(lst2)
 
 #which apps are linked to depression
 depression_apps = []
-for i in range(len(rows)):
-    if any(x in [6] for x in rows[i][7]):
-        depression_apps.append(rows[i][3])
-    if any(x in [6] for x in rows[i][13]):
-        depression_apps.append(rows[i][9])
-    if any(x in [6] for x in rows[i][19]):
-        depression_apps.append(rows[i][15])
-print(depression_apps)
+for row in rows:
+    app_indices = [7, 13, 19]  # Indices of columns to check for depression
+    app_names = [3, 9, 15]     # Indices of cols with app names
+    for i in range(len(app_indices)):
+        if any(x == 6 for x in row[app_indices[i]]):
+            depression_apps.append(row[app_names[i]])
+print("Apps reported for depression:", depression_apps)
 
 #which apps are linked to anxiety
-depression_apps = []
+anxiety_apps = []
 for i in range(len(rows)):
     if any(x in [7] for x in rows[i][7]):
-        depression_apps.append(rows[i][3])
+        anxiety_apps.append(rows[i][3])
     if any(x in [7] for x in rows[i][13]):
-        depression_apps.append(rows[i][9])
+        anxiety_apps.append(rows[i][9])
     if any(x in [7] for x in rows[i][19]):
-        depression_apps.append(rows[i][15])
-print(depression_apps)
+        anxiety_apps.append(rows[i][15])
+print("Apps reported for anxiety:", anxiety_apps)
 
 #which apps are linked to stress
-depression_apps = []
+stress_apps = []
 for i in range(len(rows)):
     if any(x in [8] for x in rows[i][7]):
-        depression_apps.append(rows[i][3])
+        stress_apps.append(rows[i][3])
     if any(x in [8] for x in rows[i][13]):
-        depression_apps.append(rows[i][9])
+        stress_apps.append(rows[i][9])
     if any(x in [8] for x in rows[i][19]):
-        depression_apps.append(rows[i][15])
-print(depression_apps)
+        stress_apps.append(rows[i][15])
+print("Apps reported for stress:", stress_apps)
